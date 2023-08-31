@@ -2,6 +2,7 @@ import os
 import shutil
 import sys
 import unicodedata
+from pathlib import Path
 
 IMAGE_EXTENSIONS = ('JPEG', 'PNG', 'JPG', 'SVG')
 VIDEO_EXTENSIONS = ('AVI', 'MP4', 'MOV', 'MKV')
@@ -11,9 +12,12 @@ ARCHIVE_EXTENSIONS = ('ZIP', 'GZ', 'TAR')
 
 def normalize(text):
     normalized_text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8')
-    allowed_chars = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеєжзиіїйклмнопрстуфхцчшщьюяАБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ0123456789.-_')
+    allowed_chars = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеєжзиіїйклмнопрстуфхцчшщьюяАБВГДЕЄЖЗИІЇЙКЛМНОПРСТЮУФХЦЧШЩЬЮЯАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя0123456789.-_')
     normalized_text = ''.join(c if c in allowed_chars else '_' for c in normalized_text)
     return normalized_text
+
+
+
 
 def process_folder(folder_path):
     for item in os.listdir(folder_path):
@@ -32,6 +36,8 @@ def process_folder(folder_path):
                 destination_folder = 'documents'
             elif file_extension in AUDIO_EXTENSIONS:
                 destination_folder = 'audio'
+            elif file_extension in ARCHIVE_EXTENSIONS:
+                destination_folder = 'archives'
             else:
                 destination_folder = 'unknown'
                 new_name = item  
