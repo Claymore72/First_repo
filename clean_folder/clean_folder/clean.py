@@ -72,9 +72,12 @@ def process_folder(folder_path):
             if not os.listdir(item_path):
                 os.rmdir(item_path)
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python sort.py folder_path")
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: clean-folder folder_path")
     else:
         target_folder = sys.argv[1]
         process_folder(target_folder)
+
+if __name__ == "__main__":
+    main()
